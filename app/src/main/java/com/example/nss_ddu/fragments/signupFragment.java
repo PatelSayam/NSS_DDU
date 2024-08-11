@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.example.nss_ddu.R;
 import com.example.nss_ddu.databinding.ActivityMainBinding;
 
-public class LoginFragment extends Fragment {
+public class signupFragment extends Fragment {
     ActivityMainBinding Binding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -20,7 +20,6 @@ public class LoginFragment extends Fragment {
         View view = Binding.getRoot();
         return view;
     }
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         Binding = null;

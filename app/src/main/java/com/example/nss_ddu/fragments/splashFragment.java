@@ -8,10 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.nss_ddu.R;
 import com.example.nss_ddu.databinding.ActivityMainBinding;
 
-public class LoginFragment extends Fragment {
+public class splashFragment extends Fragment {
     ActivityMainBinding Binding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

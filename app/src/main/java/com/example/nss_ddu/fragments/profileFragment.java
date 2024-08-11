@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import com.example.nss_ddu.R;
 import com.example.nss_ddu.databinding.ActivityMainBinding;
 
-public class LoginFragment extends Fragment {
+public class profileFragment extends Fragment {
+
     ActivityMainBinding Binding;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
