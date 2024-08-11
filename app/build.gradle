@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+
 }
 
 android {
@@ -15,7 +16,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    buildFeatures{
+        viewBinding true
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -37,4 +40,16 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+
+    //navigation dependencies
+    implementation "androidx.navigation:navigation-fragment:2.7.7"
+    implementation "androidx.navigation:navigation-ui:2.7.7"
+
+    //third-party integrations
+    implementation 'com.airbnb.android:lottie:6.5.0'
+    implementation 'com.github.fornewid:neumorphism:0.3.2'
+    implementation 'com.amazonaws:aws-android-sdk-cognitoauth:2.76.0'
+    implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.76.1'
+
+
 }
