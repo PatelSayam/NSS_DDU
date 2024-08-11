@@ -48,4 +48,8 @@ dependencies {
     //third-party integrations
     implementation 'com.airbnb.android:lottie:6.5.0'
     implementation 'com.github.fornewid:neumorphism:0.3.2'
+    implementation 'com.amazonaws:aws-android-sdk-cognitoauth:2.76.0'
+    implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.76.1'
+
+
 }
