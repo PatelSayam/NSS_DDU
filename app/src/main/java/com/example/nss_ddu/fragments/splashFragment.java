@@ -17,9 +17,8 @@ import androidx.navigation.Navigation;
 import com.example.nss_ddu.R;
 import com.example.nss_ddu.databinding.FragmentSplashBinding;
 
-import com.example.nss_ddu.databinding.ActivityMainBinding;
-
 public class splashFragment extends Fragment {
+
     private FragmentSplashBinding binding;
 
     @Nullable
@@ -33,26 +32,24 @@ public class splashFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //animations
-        Animation fade_in = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in);
-        Animation scale_up = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up);
+        // Load animations
+        Animation fadeIn = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in);
+        Animation scaleUp = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up);
 
-        binding.applogo.startAnimation(scale_up);
-        binding.appQuoate.startAnimation(fade_in);
+        // Apply animations
+        binding.applogo.startAnimation(scaleUp);
+        binding.appquote.startAnimation(fadeIn);
 
         // Navigate to LoginFragment after 3 seconds
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_splashFragment_to_loginFragment);
-            }
+        new Handler().postDelayed(() -> {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.action_splashFragment_to_loginFragment);
         }, 3000);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        binding = null; // Avoid memory leaks
     }
 }

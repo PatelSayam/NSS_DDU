@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+
+import com.example.nss_ddu.R;
 import com.example.nss_ddu.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the layout using view binding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Set up the Toolbar as the ActionBar
+        setSupportActionBar(binding.toolbar);
 
         // Find the NavHostFragment through the FragmentManager
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
