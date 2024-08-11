@@ -13,12 +13,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.NavOptions;
 
 import com.example.nss_ddu.R;
 import com.example.nss_ddu.databinding.FragmentSplashBinding;
 
 public class splashFragment extends Fragment {
-
     private FragmentSplashBinding binding;
 
     @Nullable
@@ -31,25 +31,26 @@ public class splashFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Load animations
-        Animation fadeIn = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in);
-        Animation scaleUp = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up);
-
-        // Apply animations
-        binding.applogo.startAnimation(scaleUp);
-        binding.appquote.startAnimation(fadeIn);
-
+        Animation fade_in= AnimationUtils.loadAnimation(requireContext(),R.anim.fade_in);
+        Animation scale_up= AnimationUtils.loadAnimation(requireContext(),R.anim.scale_up);
+        binding.appquote.startAnimation(fade_in);
+        binding.applogo.startAnimation(scale_up);
         // Navigate to LoginFragment after 3 seconds
         new Handler().postDelayed(() -> {
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            navController.navigate(R.id.action_splashFragment_to_loginFragment);
-        }, 3000);
+            NavController navController = Navigation.findNavController(view);
+
+            // Create NavOptions to avoid adding SplashFragment to the back stack
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.splashFragment, true) // Pop SplashFragment from back stack
+                    .build();
+
+            navController.navigate(R.id.action_splashFragment_to_loginFragment, null, navOptions);
+        }, 3000); // 3000 milliseconds = 3 seconds
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null; // Avoid memory leaks
+        binding = null;
     }
 }

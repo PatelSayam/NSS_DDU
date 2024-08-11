@@ -5,6 +5,7 @@
     android:id="@+id/main_nav"
     app:startDestination="@id/splashFragment">
 
+    <!-- Splash Fragment (Optional) -->
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.example.nss_ddu.fragments.splashFragment"
@@ -12,13 +13,38 @@
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/loginFragment" />
     </fragment>
+
+    <!-- Login Fragment -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.nss_ddu.fragments.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <!-- Action to navigate to Sign Up Fragment -->
+        <action
+            android:id="@+id/action_loginFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
+        <!-- Action to navigate to Forgot Password Fragment -->
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPassFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Sign-Up Fragment -->
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.example.nss_ddu.fragments.signupFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_signup" />
+
+    <!-- Forgot Password Fragment -->
+    <fragment
+        android:id="@+id/forgotPassFragment"
+        android:name="com.example.nss_ddu.fragments.forgotpassFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgotpass" />
+
 </navigation>
