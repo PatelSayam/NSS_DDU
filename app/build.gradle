@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+
 }
 
 android {
@@ -46,4 +47,5 @@ dependencies {
 
     //third-party integrations
     implementation 'com.airbnb.android:lottie:6.5.0'
+    implementation 'com.github.fornewid:neumorphism:0.3.2'
 }
