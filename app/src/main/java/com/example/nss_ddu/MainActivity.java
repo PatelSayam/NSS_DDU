@@ -23,7 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up the Toolbar as the ActionBar
         setSupportActionBar(binding.toolbar);
-
+        if(getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
         // Find the NavHostFragment through the FragmentManager
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
