@@ -11,6 +11,12 @@ import android.view.ViewGroup;
 import com.example.nss_ddu.R;
 import com.example.nss_ddu.databinding.ActivityMainBinding;
 
+
+//email
+//password
+//phone no
+//branch,sem
+
 public class signupFragment extends Fragment {
     ActivityMainBinding Binding;
     @Override
