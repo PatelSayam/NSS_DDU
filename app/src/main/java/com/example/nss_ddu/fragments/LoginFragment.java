@@ -6,36 +6,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.nss_ddu.Cognito;
 import com.example.nss_ddu.R;
 import com.example.nss_ddu.databinding.FragmentLoginBinding;
 
+import java.util.Map;
+
 public class LoginFragment extends Fragment {
 
-    private FragmentLoginBinding binding; // Use the correct binding type
-
-    @Nullable
+    private FragmentLoginBinding binding;
+    private Cognito authentication;
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        binding = FragmentLoginBinding.inflate(inflater, container, false); // Inflate the correct layout
+    public View onCreateView(LayoutInflater inflater,ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Set up button click listener
         binding.loginbtn.setOnClickListener(v -> handleLogin());
 
-        // Set up sign-up and forgot password click listeners
         binding.signup.setOnClickListener(v -> navigateToSignUp());
         binding.forgotpass.setOnClickListener(v -> navigateToForgotPassword());
     }
@@ -53,32 +50,27 @@ public class LoginFragment extends Fragment {
             binding.password.setError("Password is required");
             return;
         }
-
-        // Implement your login logic here
-        // For demonstration purposes, we'll just show a toast
-        Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
-
-        // Navigate to another fragment or activity after successful login
-        // Example: navigate to the next screen
-        // NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        // navController.navigate(R.id.action_loginFragment_to_nextFragment);
+        Cognito authentication = new Cognito(getContext());
+        authentication.userLogin(email.replace(" ", ""), password);
     }
 
     private void navigateToSignUp() {
-        // Navigate to the sign-up fragment
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        navController.navigate(R.id.action_loginFragment_to_signupFragment); // Update with actual action ID
+        navController.navigate(R.id.action_loginFragment_to_signupFragment);
     }
 
     private void navigateToForgotPassword() {
-        // Navigate to the forgot password fragment
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        navController.navigate(R.id.action_loginFragment_to_forgotPasswordFragment); // Update with actual action ID
+        navController.navigate(R.id.action_loginFragment_to_forgotPasswordFragment);
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null; // Avoid memory leaks
+        binding = null;
     }
 }
