@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">NSS_DDU</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cognito_pool_id">us-east-1_yMw1zXGNe</string>
+    <string name="cognito_client_id">22ae74u5o86ih6f9e4ctsvu8qd</string>
+    <string name="identity_pool_id">us-east-1:1e67feee-1c06-4bd0-8a7f-3cde44f0c6b0</string>
+</resources>
