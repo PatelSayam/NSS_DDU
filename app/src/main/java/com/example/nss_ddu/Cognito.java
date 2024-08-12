@@ -20,21 +20,23 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.cognitoidentityprovider.model.SignUpResult;
 
 import static  android.content.ContentValues.TAG;
+import static android.provider.Settings.System.getString;
 import static androidx.constraintlayout.helper.widget.MotionEffect.EAST;
 
 public class Cognito {
-    // ############################################################# Information about Cognito Pool
-    private String poolID = "@strings/cognito_pool_id";
-    private String clientID = "@strings/cognito_client_id";
+    private String poolID;
+    private String clientID;
+
     private String clientSecret = null;
-    private Regions awsRegion = Regions.US_EAST_1;         // Place your Region
-    // ############################################################# End of Information about Cognito Pool
+    private Regions awsRegion = Regions.US_EAST_1;
     private CognitoUserPool userPool;
-    private CognitoUserAttributes userAttributes;       // Used for adding attributes to the user
+    private CognitoUserAttributes userAttributes;
     private Context appContext;
-    private String userPassword;                        // Used for Login
+    private String userPassword;
     public Cognito(Context context){
         appContext = context;
+        this.poolID = context.getString(R.string.cognito_pool_id);
+        this.clientID = context.getString(R.string.cognito_client_id);
         userPool = new CognitoUserPool(context, this.poolID, this.clientID, this.clientSecret, this.awsRegion);
         userAttributes = new CognitoUserAttributes();
     }

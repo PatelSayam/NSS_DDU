@@ -8,15 +8,15 @@ buildscript {
     }
     dependencies {
         // Add any classpath dependencies here if needed.
-        classpath "com.android.tools.build:gradle:8.1.0"
+        classpath 'com.android.tools.build:gradle:8.5.2'
         // Other classpath dependencies can be added here if necessary
     }
 }
 
 // The plugins block should come after the buildscript block.
 plugins {
-    id 'com.android.application' version '8.1.0' apply false
-    id 'com.android.library' version '8.1.0' apply false
+    id 'com.android.application' version '8.5.2' apply false
+    id 'com.android.library' version '8.5.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.9.0' apply false
 }
 
