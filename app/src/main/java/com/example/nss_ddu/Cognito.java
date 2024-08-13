@@ -52,11 +52,8 @@ public class Cognito {
     SignUpHandler signUpCallback = new SignUpHandler() {
         public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
             Log.d(TAG, "Sign-up success");
-            ((Activity) appContext).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(appContext, "Sign-up success", Toast.LENGTH_LONG).show();
-                }
+            ((Activity) appContext).runOnUiThread(() -> {
+                Toast.makeText(appContext, "Sign-up success", Toast.LENGTH_LONG).show();
             });
 
             if (!userConfirmed) {
@@ -95,38 +92,48 @@ public class Cognito {
         }
     };
 
-    public void userLogin(String userId, String password) {
+    public void userLogin(String userId, String password, LoginCallback callback) {
         CognitoUser cognitoUser = userPool.getUser(userId);
         this.userPassword = password;
-        cognitoUser.getSessionInBackground(authenticationHandler);
+        cognitoUser.getSessionInBackground(new AuthenticationHandler() {
+            @Override
+            public void authenticationChallenge(ChallengeContinuation continuation) {
+                // Handle authentication challenge here
+            }
+
+            @Override
+            public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
+                if (userSession.isValid()) {
+                    Log.d(TAG, "Login successful: Session is valid.");
+                    callback.onSuccess(userSession);
+                } else {
+                    Log.d(TAG, "Login failed: Session is invalid.");
+                    callback.onFailure(new Exception("Invalid session"));
+                }
+            }
+
+            @Override
+            public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
+                AuthenticationDetails authenticationDetails = new AuthenticationDetails(userId, userPassword, null);
+                authenticationContinuation.setAuthenticationDetails(authenticationDetails);
+                authenticationContinuation.continueTask();
+            }
+
+            @Override
+            public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
+                // Handle MFA if required
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Log.d(TAG, "Login failed: " + exception.getMessage());
+                callback.onFailure(exception);
+            }
+        });
     }
 
-    AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
-        @Override
-        public void authenticationChallenge(ChallengeContinuation continuation) {
-            // Handle authentication challenge here
-        }
-
-        @Override
-        public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
-            Toast.makeText(appContext, "Sign in success", Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
-            AuthenticationDetails authenticationDetails = new AuthenticationDetails(userId, userPassword, null);
-            authenticationContinuation.setAuthenticationDetails(authenticationDetails);
-            authenticationContinuation.continueTask();
-        }
-
-        @Override
-        public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
-
-        }
-
-        @Override
-        public void onFailure(Exception exception) {
-            Toast.makeText(appContext, "Sign in Failure: " + exception.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    };
+    public interface LoginCallback {
+        void onSuccess(CognitoUserSession session);
+        void onFailure(Exception exception);
+    }
 }
