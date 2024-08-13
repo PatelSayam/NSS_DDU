@@ -1,10 +1,13 @@
 package com.example.nss_ddu.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -80,11 +83,33 @@ public class signupFragment extends Fragment {
 
         // Sign up the user
         authentication.signUpInBackground(email, password);
+        promptForOtp(email);
     }
 
     private void navigateToLogin() {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navController.navigate(R.id.action_signupFragment_to_loginFragment);
+    }
+
+    private void promptForOtp(String email) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Enter OTP");
+
+        final EditText otpInput = new EditText(getContext());
+        otpInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setView(otpInput);
+
+        builder.setPositiveButton("Confirm", (dialog, which) -> {
+            String otpCode = otpInput.getText().toString().trim();
+            if (!TextUtils.isEmpty(otpCode)) {
+                authentication.confirmUser(email, otpCode);
+            } else {
+                Toast.makeText(getContext(), "Please enter the OTP", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 
     @Override

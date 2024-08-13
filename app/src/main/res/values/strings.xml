@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NSS_DDU</string>
+    <string name="app_name">NSS-DDU</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cognito_pool_id">us-east-1_yMw1zXGNe</string>
