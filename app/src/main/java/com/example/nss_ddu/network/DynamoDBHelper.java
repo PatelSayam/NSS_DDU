@@ -7,12 +7,14 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.example.nss_ddu.models.Event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DynamoDBHelper {
 
@@ -36,21 +38,39 @@ public class DynamoDBHelper {
         dynamoDBClient = new AmazonDynamoDBClient(credentialsProvider);
     }
 
-    public List<Event> getEvents() {
-        List<Event> eventList = new ArrayList<>();
+    public void getEvents(Callback callback) {
+        new Thread(() -> {
+            List<Event> eventList = new ArrayList<>();
 
-        try {
-            ScanRequest scanRequest = new ScanRequest()
-                    .withTableName("nssddu_events");
+            try {
+                ScanRequest scanRequest = new ScanRequest()
+                        .withTableName("nssddu_events");
 
-            ScanResult result = dynamoDBClient.scan(scanRequest);
-            // Process the results here and populate the eventList
+                ScanResult result = dynamoDBClient.scan(scanRequest);
 
-        } catch (Exception e) {
-            Log.e(TAG, "Error fetching events", e);
-        }
+                for (Map<String, AttributeValue> item : result.getItems()) {
+                    String title = item.get("title").getS();
+                    String description = item.get("description").getS();
+                    String date = item.get("date").getS();
+                    String venue = item.get("venue").getS();
+                    String time = item.get("time").getS();
 
-        return eventList;
+                    Event event = new Event(title, description, date, venue, time);
+                    eventList.add(event);
+                }
+
+                // Notify success
+                callback.onSuccess(eventList);
+
+            } catch (Exception e) {
+                Log.e(TAG, "Error fetching events", e);
+                callback.onFailure(e);
+            }
+        }).start();
     }
 
+    public interface Callback {
+        void onSuccess(List<Event> events);
+        void onFailure(Exception exception);
+    }
 }

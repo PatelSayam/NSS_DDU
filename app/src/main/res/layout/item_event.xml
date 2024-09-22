@@ -10,52 +10,34 @@
         android:id="@+id/event_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
         android:textStyle="bold"
-        android:text="Event Title"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Event Title" />
 
     <TextView
         android:id="@+id/event_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="Event Description"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_title" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Event Description" />
 
     <TextView
         android:id="@+id/event_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="Event Date"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_description"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_description" />
+        tools:text="Event Date" />
 
     <TextView
         android:id="@+id/event_venue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="Event Venue"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_date" />
-
-    <Button
-        android:id="@+id/register_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_venue"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:text="Event Venue" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,6 @@
 package com.example.nss_ddu.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class Event implements Parcelable {
+public class Event {
     private String title;
     private String description;
     private String registrationLink;
@@ -11,56 +8,51 @@ public class Event implements Parcelable {
     private String venue;
     private String time;
 
-    public Event(String title, String description, String registrationLink, String date, String venue, String time) {
-        this.title = title;
-        this.description = description;
+    // Constructor
+    public Event(String title, String description, String date, String venue, String time) {
+        this.title = this.title;
+        this.description = this.description;
         this.registrationLink = registrationLink;
-        this.date = date;
-        this.venue = venue;
-        this.time = time;
+        this.date = this.date;
+        this.venue = this.venue;
+        this.time = this.time;
     }
 
-    protected Event(Parcel in) {
-        title = in.readString();
-        description = in.readString();
-        registrationLink = in.readString();
-        date = in.readString();
-        venue = in.readString();
-        time = in.readString();
+    // Getters
+    public String getTitle() {
+        return title;
     }
 
-    public static final Creator<Event> CREATOR = new Creator<Event>() {
-        @Override
-        public Event createFromParcel(Parcel in) {
-            return new Event(in);
-        }
+    public String getDescription() {
+        return description;
+    }
 
-        @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
-        }
-    };
+    public String getRegistrationLink() {
+        return registrationLink;
+    }
 
+    public String getDate() {
+        return date;
+    }
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    // toString for debugging
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeString(description);
-        dest.writeString(registrationLink);
-        dest.writeString(date);
-        dest.writeString(venue);
-        dest.writeString(time);
+    public String toString() {
+        return "Event{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", registrationLink='" + registrationLink + '\'' +
+                ", date='" + date + '\'' +
+                ", venue='" + venue + '\'' +
+                ", time='" + time + '\'' +
+                '}';
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    // Getters and Setters
-    public String getTitle() { return title; }
-    public String getDescription() { return description; }
-    public String getRegistrationLink() { return registrationLink; }
-    public String getDate() { return date; }
-    public String getVenue() { return venue; }
-    public String getTime() { return time; }
 }
