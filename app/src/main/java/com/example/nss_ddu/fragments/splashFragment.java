@@ -33,8 +33,8 @@ public class splashFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Animation fade_in= AnimationUtils.loadAnimation(requireContext(),R.anim.fade_in);
         Animation scale_up= AnimationUtils.loadAnimation(requireContext(),R.anim.scale_up);
-        binding.appquote.startAnimation(fade_in);
-        binding.applogo.startAnimation(scale_up);
+            binding.appquote.startAnimation(fade_in);
+            binding.applogo.startAnimation(scale_up);
         // Navigate to LoginFragment after 3 seconds
         new Handler().postDelayed(() -> {
             NavController navController = Navigation.findNavController(view);

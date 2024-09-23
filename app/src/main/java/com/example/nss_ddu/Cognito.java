@@ -10,8 +10,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
@@ -31,19 +29,16 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHan
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.cognitoidentityprovider.model.SignUpResult;
 
-import static android.content.ContentValues.TAG;
-import static androidx.navigation.ActivityNavigatorDestinationBuilderKt.activity;
-
 public class Cognito {
+    private static final String TAG = "Cognito";
     private String poolID;
     private String clientID;
-    private String clientSecret = null; // Assuming you don't use a client secret
+    private String clientSecret = null;
     private Regions awsRegion = Regions.US_EAST_1;
     private CognitoUserPool userPool;
     private CognitoUserAttributes userAttributes;
     private Context appContext;
     private String userPassword;
-    private ForgotPasswordContinuation forgotPasswordContinuation;
 
     public Cognito(Context context) {
         appContext = context;
@@ -53,7 +48,6 @@ public class Cognito {
         userAttributes = new CognitoUserAttributes();
     }
 
-    // Add user attributes
     public void addAttribute(String key, String value) {
         userAttributes.addAttribute(key, value);
     }
@@ -65,10 +59,13 @@ public class Cognito {
     private SignUpHandler signUpCallback = new SignUpHandler() {
         public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
             Log.d(TAG, "Sign-up success");
-            ((Activity) appContext).runOnUiThread(() -> Toast.makeText(appContext, "Sign-up success", Toast.LENGTH_LONG).show());
+            ((Activity) appContext).runOnUiThread(() ->
+                    Toast.makeText(appContext, "Sign-up success", Toast.LENGTH_LONG).show()
+            );
 
             if (!userConfirmed) {
-                Log.d(TAG, "User needs to confirm their account.");
+                Log.d(TAG, "User needs to confirm their account. Code sent to: "
+                        + cognitoUserCodeDeliveryDetails.getDestination());
             } else {
                 Toast.makeText(appContext, "User already confirmed", Toast.LENGTH_LONG).show();
             }
@@ -82,10 +79,14 @@ public class Cognito {
 
         @Override
         public void onFailure(Exception exception) {
-            Toast.makeText(appContext, "Sign-up failed: " + exception.getMessage(), Toast.LENGTH_LONG).show();
-            Log.d(TAG, "Sign-up failed: " + exception);
+            ((Activity) appContext).runOnUiThread(() ->
+                    Toast.makeText(appContext, "Sign-up failed: " + exception.getMessage(), Toast.LENGTH_LONG).show()
+            );
+            Log.d(TAG, "Sign-up failed: " + exception.getMessage());
         }
     };
+
+
 
     public void confirmUser(String userId, String code) {
         CognitoUser cognitoUser = userPool.getUser(userId);
@@ -126,10 +127,10 @@ public class Cognito {
             }
 
             @Override
-            public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
+            public void getAuthenticationDetails(AuthenticationContinuation continuation, String userId) {
                 AuthenticationDetails authenticationDetails = new AuthenticationDetails(userId, userPassword, null);
-                authenticationContinuation.setAuthenticationDetails(authenticationDetails);
-                authenticationContinuation.continueTask();
+                continuation.setAuthenticationDetails(authenticationDetails);
+                continuation.continueTask();
                 Log.d(TAG, "Authentication details sent.");
             }
 
@@ -152,7 +153,6 @@ public class Cognito {
         void onFailure(Exception exception);
     }
 
-    // PasswordResetViewModel class
     public static class PasswordResetViewModel extends ViewModel {
         private MutableLiveData<ForgotPasswordContinuation> continuation = new MutableLiveData<>();
 
@@ -164,7 +164,6 @@ public class Cognito {
             return continuation;
         }
     }
-
 
     public void forgotPassword(String email, ForgotPasswordCallback callback, Fragment fragment) {
         CognitoUser cognitoUser = userPool.getUser(email);
@@ -205,7 +204,7 @@ public class Cognito {
             return;
         }
 
-        Log.d("Cognito", "Attempting to confirm forgot password with email: " + email + " and resetCode: " + resetCode);
+        Log.d(TAG, "Attempting to confirm forgot password with email: " + email + " and resetCode: " + resetCode);
 
         try {
             continuation.setPassword(newPassword);
@@ -213,10 +212,11 @@ public class Cognito {
             continuation.continueTask();
             callback.onSuccess1();
         } catch (Exception e) {
-            Log.e("Cognito", "Error during password reset", e);
+            Log.e(TAG, "Error during password reset", e);
             callback.onFailure1(e);
         }
     }
+
     public interface ConfirmPasswordCallback {
         void onSuccess1();
         void onFailure1(Exception exception);
